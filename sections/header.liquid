@@ -1,0 +1,126 @@
+<div class="relative bg-white">
+  <div class="mx-auto px-4 sm:px-6">
+    <div class="flex justify-between items-center py-6 md:justify-start md:space-x-10 w-full" x-data="{ mobileMenuOpen: false }">
+      <!-- STORE NAME / STORE LOGO -->
+      <div class="flex justify-start lg:flex-1 truncate">
+        <h1 class="text-xl font-bold truncate">{{ shop.name }}</h1>
+      </div>
+
+      <!-- NAVIGATION MENU -->
+      <nav class="hidden md:flex space-x-10"  >
+        {% for link in linklists.main-menu.links %}
+          
+          {% if link.links != blank %}
+            <div class="relative" x-data="{ open: false }">
+              <button type="button" class="inline-flex items-center text-base text-gray-500 hover:text-gray-900" x-on:click="open = ! open">
+                {{link.title}} {% render "icon-chevron-down" %}
+              </button>
+
+              <div class="absolute z-10 -ml-5 mt-5 transform px-2 w-screen max-w-md sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2 " x-bind:class="! open && 'hidden'"  x-show="open" x-transition @click.away="open = false">
+                <div class="shadow-lg border ring-black ring-opacity-5 overflow-hidden rounded-lg">
+                  <div class="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
+                    {% for dropdownItem in link.links %}
+                    <!-- CREATE THE SUBLINK -->
+                    <a href="{{ dropdownItem.url }}" class="-m-3 p-3 flex items start rounded-lg hover:bg-gray-100">
+                      <div class="ml-4">
+                        <p class="{% if  dropdownItem.active == true %} text-red-500 {% else  %} text-gray-500 hover:text-gray-900 {% endif %} text-base font-medium">
+                         {{dropdownItem.title}}
+                        </p>
+                      </div>
+                    </a>
+
+                  {% endfor %}
+
+                   
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          {% else %}
+          
+            <div class="relative">
+              <a href="{{ link.url }}" class="text-base  {% if  link.active == true %} text-red-500 {% else  %} text-gray-500 hover:text-gray-900 {% endif %}">{{ link.title }}</a>
+            </div>
+          {% endif %}
+
+        {% endfor %}
+    
+      </nav>
+
+      <div class="-mr-2 -my-2 ml-3 md:hidden">
+          <button type="button" class="bg-white p-2 inline-flex items-center justify-center focus:outline-none" x-on:click="mobileMenuOpen = ! mobileMenuOpen">
+              {% render "icon-hamburger" %}
+          </button>
+      </div>
+
+
+      <!-- MOBILE MENU CONTAINER -->
+      <div class="absolute z-10 top-0 inset-x-0 p-2 transform origin-top-left md:hidden" x-show="mobileMenuOpen" >
+        <div class="shadow-lg rounded-lg ring-1 ring-black ring-opacity-5 bg-white w-full">
+            <div class="p-5 divide-y-2 divide-gray-50">
+
+                <!-- MOBILE MENU HEADER TITLE PLUS CLOSE BUTTON -->
+                <div class="flex items-center justify-between pb-3">
+                    <div>
+                        <h1 class="text-lg text-gray-500">{{ shop.name}}</h1>
+                    </div>
+                    <div class="-mr-2">
+                        <button type="button" class="bg-white rounded-md p-2 text-gray-500" x-on:click="mobileMenuOpen = false">
+                            {% render "icon-close" %}
+                        </button>
+                    </div>
+                </div>
+
+                <!-- NAVIGATION LINKS FOR MOBILE MENU -->
+                <div class="pt-3">
+                    <nav class="grid gap-y-7">
+                      {% for link in linklists.main-menu.links %}
+                      
+                        {% if link.links == blank %}
+                          <a href="{{ link.url }}" class="-m-3 p-3 flex items-center rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-50">
+                              {{ link.title }}
+                          </a>
+                        {% else  %}
+
+                        <div class="relative">
+                            <button type="button" class="text-base text-gray-500 hover:text-gray-900 flex items-center justify-between w-full">
+                                <div>{{ link.title }}</div>
+                            </button>
+
+                            <div class="grid gap-y-7 py-3">
+                              {% for dropdownItem in link.links %}
+                                {{dropdownItem.handle}}
+                                <a href="{{ dropdownItem.url }}" class="-m-3 p-3 mt-2 flex items-center rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-50">
+                                    <span class="ml-3 text-base font-medium text-gray-500">{{ dropdownItem.title }}</span>
+                                </a>
+                              {% endfor %}
+                            </div>
+                        </div>
+
+                        {% endif %}
+
+                    
+                        {% endfor %}
+
+                        
+
+                        
+                    </nav>
+                </div>
+            </div>
+        </div>
+      </div>
+
+      <div class="hidden md:flex items-center justify-end md:flex-1 space-x-5">
+        <a href="{{ routes.cart_url }}" class="whitespace-nowrap text-base {% if  request.path == routes.cart_url %} text-red-500 {% else  %} text-gray-500 hover:text-gray-900 {% endif %}">
+          {% render "icon-shopping-bag" %}
+        </a>
+
+        <a href="{{ routes.account_login_url }}" class="text-base {% if request.path == routes.account_login_url  %} text-red-500 {% else  %} text-gray-500 hover:text-gray-900 {% endif %}">Login</a>
+        <a href="{{ routes.account_register_url }}" class="text-base {% if  request.path == routes.account_register_url %} text-red-500 {% else  %} text-gray-500 hover:text-gray-900 {% endif %}">Register</a>
+      </div>
+    </div>
+  </div>
+</div>

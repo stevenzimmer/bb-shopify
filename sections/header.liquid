@@ -1,3 +1,5 @@
+{%  assign main_menu_linklist = linklists[section.settings.menu].links %}
+
 <div class="relative bg-white">
   <div class="mx-auto px-4 sm:px-6">
     <div class="flex justify-between items-center py-6 md:justify-start md:space-x-10 w-full" x-data="{ mobileMenuOpen: false }">
@@ -8,7 +10,7 @@
 
       <!-- NAVIGATION MENU -->
       <nav class="hidden md:flex space-x-10"  >
-        {% for link in linklists.main-menu.links %}
+        {% for link in main_menu_linklist %}
           
           {% if link.links != blank %}
             <div class="relative" x-data="{ open: false }">
@@ -64,7 +66,7 @@
                 <!-- MOBILE MENU HEADER TITLE PLUS CLOSE BUTTON -->
                 <div class="flex items-center justify-between pb-3">
                     <div>
-                        <h1 class="text-lg text-gray-500">{{ shop.name}}</h1>
+                        <h1 class="text-lg text-gray-500">{{ section.settings.mobile_menu_title }}</h1>
                     </div>
                     <div class="-mr-2">
                         <button type="button" class="bg-white rounded-md p-2 text-gray-500" x-on:click="mobileMenuOpen = false">
@@ -76,7 +78,7 @@
                 <!-- NAVIGATION LINKS FOR MOBILE MENU -->
                 <div class="pt-3">
                     <nav class="grid gap-y-7">
-                      {% for link in linklists.main-menu.links %}
+                      {% for link in main_menu_linklist %}
                       
                         {% if link.links == blank %}
                           <a href="{{ link.url }}" class="-m-3 p-3 flex items-center rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-50">
@@ -98,15 +100,8 @@
                               {% endfor %}
                             </div>
                         </div>
-
-                        {% endif %}
-
-                    
+                        {% endif %}                    
                         {% endfor %}
-
-                        
-
-                        
                     </nav>
                 </div>
             </div>
@@ -117,10 +112,36 @@
         <a href="{{ routes.cart_url }}" class="whitespace-nowrap text-base {% if  request.path == routes.cart_url %} text-red-500 {% else  %} text-gray-500 hover:text-gray-900 {% endif %}">
           {% render "icon-shopping-bag" %}
         </a>
-
+          {% if shop.customer_accounts_enabled %}
         <a href="{{ routes.account_login_url }}" class="text-base {% if request.path == routes.account_login_url  %} text-red-500 {% else  %} text-gray-500 hover:text-gray-900 {% endif %}">Login</a>
         <a href="{{ routes.account_register_url }}" class="text-base {% if  request.path == routes.account_register_url %} text-red-500 {% else  %} text-gray-500 hover:text-gray-900 {% endif %}">Register</a>
+        {% endif %}
       </div>
     </div>
   </div>
 </div>
+
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "text",
+      "id": "mobile_menu_title",
+      "label": "Mobile Menu title",
+      "default": "Benji Bakes",
+      "info": "Placed on the header of the mobile menu"
+
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Header Menu",
+      "default": "main-menu",
+      "info": "Select the menu you want to display in the header"
+
+    }
+  ]
+}
+{% endschema %}

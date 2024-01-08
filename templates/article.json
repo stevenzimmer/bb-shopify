@@ -1,0 +1,12 @@
+{
+  "name": "Template Article",
+  "wrapper": "div#template_article.template_article",
+  "sections": {
+    "template": {
+      "type": "template-article"
+    }
+  },
+  "order": [
+    "template"
+  ]
+}

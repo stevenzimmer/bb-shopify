@@ -1,0 +1,43 @@
+<h1>{{ section.settings.title }}</h1>
+<p>{{ section.settings.subtext_html}}</p>
+<div>
+  {% if section.settings.button_url == blank %}
+    {% assign shop_url = shop.secure_url %}
+  {% else %}
+    {% assign shop_url = section.settings.button_url %}
+  {% endif %}
+  <a href="{{ shop_url }}" class="btn btn--secondary">{{ section.settings.button_text }}</a>
+</div>
+
+{% schema %}
+{
+  "name": "Template 404",
+  "tag": "section",
+  "class": "section-404",
+  "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "404"
+      },
+      {
+        "type": "text",
+        "id": "subtext_html",
+        "label": "Subtext",
+        "default": "Sorry, the page you are looking for could not be found."
+      },
+      {
+        "type": "text",
+        "id": "button_text",
+        "label": "Button Text",
+        "default": "Back to Home"
+      },
+      {
+        "type": "url",
+        "id": "button_url",
+        "label": "Button URL"
+      }
+    ]
+}
+{% endschema %}
